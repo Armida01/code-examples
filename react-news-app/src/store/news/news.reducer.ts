@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 // Actions
-import { addNews, changeNewsCategory } from './news.actions';
+import { getNews, changePage, changeNewsCategory } from './news.actions';
 
 // Types
 import { INewsState } from './types';
@@ -9,22 +9,34 @@ import { INewsState } from './types';
 
 const initialState: INewsState = {
     list: [],
-    loading: false,
     page: 1,
-    total: 30
+    total: 30,
+    loading: true,
+    error: false,
 };
 
 const newsReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(addNews, (state, action) => {
-            state.list.push(action.payload);
-            state.list = state.list.flat()
+        .addCase(getNews.fulfilled, (state, action) => {
+            state.list.push(...action.payload.articles);
+
+            state.total = action.payload.totalResults;
+
+            state.loading = false
+            state.error = false;
+        })
+        .addCase(getNews.pending, (state) => {
+            state.loading = true;
+            state.error = false;
+        })
+
+        .addCase(changePage, (state) => {
             state.page++
         })
-        .addCase(changeNewsCategory, (state, action) => {
+
+        .addCase(changeNewsCategory, (state) => {
             state.list = [];
             state.page = 1;
-            state.list.push(action.payload);
         })
         .addDefaultCase((state) => state);
 });

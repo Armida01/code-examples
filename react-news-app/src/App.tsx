@@ -7,7 +7,7 @@ import {
 
 // Pages
 import {
-  Home,
+  News
 } from './pages';
 
 function App() {
@@ -15,7 +15,13 @@ function App() {
       <div className="App">
         <Routes>
           <Route element={<Layouts />}>
-            <Route path="/" element={<Home />}/>
+            <Route path="/" element={<News category="general"/>}/>
+            <Route path="/business" element={<News category="business"/>}/>
+            <Route path="/sports" element={<News category="sports"/>}/>
+            <Route path="/science" element={<News category="science"/>}/>
+            <Route path="/health" element={<News category="health"/>}/>
+            <Route path="/entertainment" element={<News category="entertainment"/>}/>
+            <Route path="/technology" element={<News category="technology"/>}/>
           </Route>
         </Routes>
       </div>
