@@ -1,11 +1,30 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+
+// Services
+import { NewsService } from '../../services';
 
 // Action types
-import { ADD_NEWS, CHANGE_NEWS_CATEGORY } from './news.actionTypes';
+import {GET_NEWS, CHANGE_NEWS_CATEGORY, CHANGE_PAGE } from './news.actionTypes';
 
 // Types
-import { INewsItem } from './types';
+import { INewsItem, IGetNewsPayloadData, IGetNewsActionPayloadData } from './types';
 
-export const addNews = createAction<INewsItem>(ADD_NEWS);
+export const getNews = createAsyncThunk<IGetNewsActionPayloadData, IGetNewsPayloadData>(
+    GET_NEWS,
+    async (data) => {
+        try {
+            const response = await NewsService.getNews<INewsItem[]>(data);
 
-export const changeNewsCategory = createAction<INewsItem>(CHANGE_NEWS_CATEGORY);
+            return {
+                articles: response.data.articles,
+                totalResults: response.data.totalResults
+            };
+        } catch (e: any) {
+            throw e.message;
+        }
+    }
+)
+
+export const changePage = createAction(CHANGE_PAGE);
+
+export const changeNewsCategory = createAction(CHANGE_NEWS_CATEGORY);

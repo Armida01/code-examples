@@ -9,4 +9,7 @@ export { default as NavItem } from './shared/layouts/Header/NavItem';
 export { default as Footer } from './shared/layouts/Footer';
 
 // News
-export { default as NewsItem } from './News/NewsItem'
+export { default as NewsItem } from './News/NewsItem';
+
+// UI
+export { default as Loader } from './UI/Loader';
